@@ -1,49 +1,103 @@
-// controllers/User.js
+// // controllers/User.js
+// const User = require('../models/User');
+// const jwt = require('jsonwebtoken');
+
+// const signup = (req, res) => {
+//   const { name, email, password } = req.body;
+//   User.findByEmail(email, (err, user) => {
+//     if (err) {
+//       return res.status(500).json({ error: 'Error checking user' });
+//     }
+//     if (user) {
+//       return res.status(400).json({ error: 'Email already in use' });
+//     }
+//     const newUser = { name, email, password };
+//     User.create(newUser, (err, userId) => {
+//       if (err) {
+//         return res.status(500).json({ error: 'Error creating user' });
+//       }
+//       res.status(201).json({ message: 'User created successfully', userId });
+//     });
+//   });
+// };
+
+// const login = (req, res) => {
+//   const { email, password } = req.body;
+//   User.findByEmail(email, (err, user) => {
+//     if (err) {
+//       return res.status(500).json({ error: 'Error checking user' });
+//     }
+//     if (!user) {
+//       return res.status(400).json({ error: 'User not found' });
+//     }
+//     bcrypt.compare(password, user.password, (err, isMatch) => {
+//       if (err) {
+//         return res.status(500).json({ error: 'Error checking password' });
+//       }
+//       if (!isMatch) {
+//         return res.status(400).json({ error: 'Incorrect password' });
+//       }
+//       const token = jwt.sign({ userId: user.id }, 'your_jwt_secret', { expiresIn: '1h' });
+//       res.json({ message: 'Login successful', token });
+//     });
+//   });
+// };
+
+// module.exports = {
+//   signup,
+//   login,
+// };
+
+
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 
-const signup = (req, res) => {
+exports.signup = (req, res) => {
   const { name, email, password } = req.body;
-  User.findByEmail(email, (err, user) => {
+
+  User.findByEmail(email, (err, existingUser) => {
     if (err) {
       return res.status(500).json({ error: 'Error checking user' });
     }
-    if (user) {
-      return res.status(400).json({ error: 'Email already in use' });
+    if (existingUser) {
+      return res.status(400).json({ error: 'User already exists' });
     }
+
     const newUser = { name, email, password };
     User.create(newUser, (err, userId) => {
       if (err) {
         return res.status(500).json({ error: 'Error creating user' });
       }
-      res.status(201).json({ message: 'User created successfully', userId });
+      const payload = { userId };
+      const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
+      res.status(201).json({ token });
     });
   });
 };
 
-const login = (req, res) => {
+exports.login = (req, res) => {
   const { email, password } = req.body;
+
   User.findByEmail(email, (err, user) => {
     if (err) {
       return res.status(500).json({ error: 'Error checking user' });
     }
     if (!user) {
-      return res.status(400).json({ error: 'User not found' });
+      return res.status(400).json({ error: 'Invalid email or password' });
     }
+
     bcrypt.compare(password, user.password, (err, isMatch) => {
       if (err) {
         return res.status(500).json({ error: 'Error checking password' });
       }
       if (!isMatch) {
-        return res.status(400).json({ error: 'Incorrect password' });
+        return res.status(400).json({ error: 'Invalid email or password' });
       }
-      const token = jwt.sign({ userId: user.id }, 'your_jwt_secret', { expiresIn: '1h' });
-      res.json({ message: 'Login successful', token });
+
+      const payload = { userId: user.id };
+      const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
+      res.status(200).json({ token });
     });
   });
-};
-
-module.exports = {
-  signup,
-  login,
 };
