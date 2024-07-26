@@ -9,6 +9,7 @@ const Header = () => {
       <div>
         <Link to="" className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark transition-colors mr-4">Contact Us</Link>
         <Link to="" className="bg-secondary text-white px-4 py-2 rounded-lg hover:bg-secondary-dark transition-colors">Profile</Link>
+        <Link to="" className="bg-secondary text-white px-4 py-2 rounded-lg hover:bg-secondary-dark transition-colors">Update Profile</Link>
       </div>
     </header>
   );
