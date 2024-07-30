@@ -1,75 +1,32 @@
-
-// const connection = require('../config/db');
-// // const bcrypt = require('bcrypt');
-// const bcrypt = require('bcryptjs'); // Change from 'bcrypt' to 'bcryptjs'
-
-
-// const User = {
-//   findByEmail: (email, callback) => {
-//     connection.query('SELECT * FROM users WHERE email = ?', [email], (err, results) => {
-//       if (err) {
-//         return callback(err, null);
-//       }
-//       callback(null, results[0]);
-//     });
-//   },
-
-//   create: (user, callback) => {
-//     bcrypt.hash(user.password, 10, (err, hash) => {
-//       if (err) {
-//         return callback(err, null);
-//       }
-//       user.password = hash;
-//       connection.query('INSERT INTO users SET ?', user, (err, results) => {
-//         if (err) {
-//           return callback(err, null);
-//         }
-//         callback(null, results.insertId);
-//       });
-//     });
-//   }
-// };
-
-// module.exports = User;
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/db');
+const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
-const User = sequelize.define('User', {
-  name: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  email: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true
-  },
-  password: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  role: {
-    type: DataTypes.STRING,
-    defaultValue: 'Student'
-  }
+const userSchema = new mongoose.Schema({
+  name: String,
+  email: { type: String, unique: true, required: true },
+  password: { type: String, required: true },
+  role: { type: String, default: 'Student' }
+}, {
+  timestamps: true
 });
 
-// Hash password before saving to database
-User.beforeCreate(async (user) => {
-  if (user.password) {
-    const hashedPassword = await bcrypt.hash(user.password, 10);
-    user.password = hashedPassword;
-  }
-});
-
-User.findByEmail = async (email) => {
+// Hash password before saving
+userSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) return next();
+  
   try {
-    const user = await User.findOne({ where: { email } });
-    return user;
-  } catch (err) {
-    throw err;
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+    next();
+  } catch (error) {
+    next(error);
   }
+});
+
+userSchema.methods.comparePassword = async function (candidatePassword) {
+  return bcrypt.compare(candidatePassword, this.password);
 };
+
+const User = mongoose.model('User', userSchema);
 
 module.exports = User;
