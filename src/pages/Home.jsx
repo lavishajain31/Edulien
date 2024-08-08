@@ -27,7 +27,7 @@ const Home = () => {
     <p className="text-lg mb-8 animate__animated animate__fadeIn animate__delay-1s">Edulien brings students together to share knowledge, collaborate, and excel in their academic journey.</p>
   </div>
 </section>
-      <section className="p-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      {/* <section className="p-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         <div className="bg-white p-6 rounded-lg shadow-md text-center hover:bg-primary-light transition-colors">
           <FaBook className="text-4xl text-primary mb-4" />
           <h3 className="text-xl font-semibold mb-2">Blogs</h3>
@@ -52,7 +52,59 @@ const Home = () => {
           <p>Create and join groups to collaborate and connect with peers.</p>
           <Link to="/groups" className="text-primary hover:underline flex items-center justify-center mt-4">Join Groups <FaArrowRight className="ml-2" /></Link>
         </div>
-      </section>
+      </section> */}
+
+<section className="bg-gray-900 min-h-screen py-24">
+  <div className="relative max-w-5xl mx-auto flex flex-col items-center">
+    {/* Timeline Line */}
+    <div className="absolute w-0.5 h-full bg-gray-800 left-1/2 transform -translate-x-1/2"></div>
+
+    {/* Blogs Section */}
+    <div className="w-full mb-10 relative flex flex-col items-center">
+      <div className="h-4 w-4 bg-primary rounded-full absolute left-1/2 transform -translate-x-1/2 top-2"></div>
+      <div className="bg-white p-6 rounded-lg shadow-md text-center hover:bg-primary-light transition-colors w-3/4 lg:w-1/2">
+        <FaBook className="text-4xl text-primary mb-4" />
+        <h3 className="text-xl font-semibold mb-2">Blogs</h3>
+        <p>Share and read blogs to stay updated and engaged with campus life.</p>
+        <Link to="/blogs" className="text-primary hover:underline flex items-center justify-center mt-4">Read More <FaArrowRight className="ml-2" /></Link>
+      </div>
+    </div>
+
+    {/* Class Notes Section */}
+    <div className="w-full mb-10 relative flex flex-col items-center">
+      <div className="h-4 w-4 bg-primary rounded-full absolute left-1/2 transform -translate-x-1/2 top-2"></div>
+      <div className="bg-white p-6 rounded-lg shadow-md text-center hover:bg-primary-light transition-colors w-3/4 lg:w-1/2">
+        <FaStickyNote className="text-4xl text-primary mb-4" />
+        <h3 className="text-xl font-semibold mb-2">Class Notes</h3>
+        <p>Upload and find class notes to keep track of your academic progress.</p>
+        <Link to="/notes" className="text-primary hover:underline flex items-center justify-center mt-4">Explore Notes <FaArrowRight className="ml-2" /></Link>
+      </div>
+    </div>
+
+    {/* Subject Syllabus Section */}
+    <div className="w-full mb-10 relative flex flex-col items-center">
+      <div className="h-4 w-4 bg-primary rounded-full absolute left-1/2 transform -translate-x-1/2 top-2"></div>
+      <div className="bg-white p-6 rounded-lg shadow-md text-center hover:bg-primary-light transition-colors w-3/4 lg:w-1/2">
+        <FaList className="text-4xl text-primary mb-4" />
+        <h3 className="text-xl font-semibold mb-2">Subject Syllabus</h3>
+        <p>Access and download syllabi to stay on top of your coursework.</p>
+        <Link to="/syllabus" className="text-primary hover:underline flex items-center justify-center mt-4">View Syllabus <FaArrowRight className="ml-2" /></Link>
+      </div>
+    </div>
+
+    {/* Groups Section */}
+    <div className="w-full mb-10 relative flex flex-col items-center">
+      <div className="h-4 w-4 bg-primary rounded-full absolute left-1/2 transform -translate-x-1/2 top-2"></div>
+      <div className="bg-white p-6 rounded-lg shadow-md text-center hover:bg-primary-light transition-colors w-3/4 lg:w-1/2">
+        <FaUsers className="text-4xl text-primary mb-4" />
+        <h3 className="text-xl font-semibold mb-2">Groups</h3>
+        <p>Create and join groups to collaborate and connect with peers.</p>
+        <Link to="/groups" className="text-primary hover:underline flex items-center justify-center mt-4">Join Groups <FaArrowRight className="ml-2" /></Link>
+      </div>
+    </div>
+  </div>
+</section>
+
 
       {/* Testimonials Section */}
       <section className="p-12 bg-gray-100 text-center">
