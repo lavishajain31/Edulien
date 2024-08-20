@@ -7,3 +7,24 @@ body {
   background: linear-gradient(135deg, #2A0944, #8450b8, #48445e);
   color: theme('colors.white');
 }
+
+html {
+  scroll-behavior: smooth;
+}
+
+
+/* splash screen */
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+
+
+.logoo.active {
+  bottom: 0;
+  opacity: 1;
+  transition: ease-in-out 0.5s;
+}
+
+.logoo.fade {
+  bottom: 0;
+  opacity: 0;
+  transition: ease-in-out 0.5s;
+}

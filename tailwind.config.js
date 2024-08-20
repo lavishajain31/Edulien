@@ -24,6 +24,10 @@ module.exports = {
         lightGray: '#2b2b2b',
         white: '#ffffff',
       },
+      fontFamily: {
+        'bebas-neue': ['Bebas Neue', 'sans-serif'],
+      },
+
     },
   },
   plugins: [],

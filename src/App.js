@@ -5,6 +5,8 @@ import Home from './pages/Home';
 // import PrivateRoute from './Routes/PrivateRoute';
 import Groups from './pages/Groups';
 import SyllabusPage from './pages/SyllabusPage';
+import ContactUs from './pages/ContactUs';
+import GroupDetails from './pages/GroupDetails';
 
 function App() {
   return (
@@ -13,7 +15,9 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="home" element={<Home />} />
         <Route path="/groups" element={<Groups/>}/>
+        <Route path="/groups/:id" element={<GroupDetails />} />
         <Route path="/syllabus" element={<SyllabusPage/>}/>
+        <Route path="/contact" element={<ContactUs/>}/>
       </Routes>
     </Router>
   );

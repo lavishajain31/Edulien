@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FaUser, FaAt, FaLock } from 'react-icons/fa';
 import login from '../Assets/login.jpg';
 import axios from 'axios'; 
+import SplashScreen from './SplashScreen';
+
+
 
 const validateEmail = (email) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -16,6 +19,7 @@ const validatePassword = (password) => {
 };
 
 function Login() {
+  const [loading, setLoading] = useState(true);
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const [signupName, setSignupName] = useState('');
@@ -28,6 +32,26 @@ function Login() {
   const [signupPasswordError, setSignupPasswordError] = useState('');
   const [authError, setAuthError] = useState(''); // To display auth errors
 
+
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     setIsSplashVisible(false);
+  //   }, 3000); // Adjust the duration as needed (3000ms = 3 seconds)
+
+  //   return () => clearTimeout(timer);
+  // }, []);
+
+  
+  useEffect(() => {
+    const timer = setTimeout(() => {
+        setLoading(false);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
+  
+  if (loading) {
+    return <SplashScreen />;
+  }
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     setLoginEmailError('');
