@@ -1,65 +1,62 @@
-import React, { useState, useEffect } from 'react';
-import GroupCard from './GroupCard';
-import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { getAllGroups } from '../API/GroupApi';
 
-const Groups = () => {
+const Groups = ({ token }) => {
   const [groups, setGroups] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Fetch all groups from the server
     const fetchGroups = async () => {
       try {
-        const response = await axios.get('/api/groups');
-        setGroups(response.data);
-        setLoading(false);
+        const data = await getAllGroups(token);
+        setGroups(data);
       } catch (error) {
         console.error('Error fetching groups:', error);
-        setLoading(false);
       }
     };
-    
-    fetchGroups();
-  }, []);
 
-  // Filter groups based on search term
-  const filteredGroups = groups.filter(
-    (group) =>
-      group.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      group.description.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+    fetchGroups();
+  }, [token]);
+
+  const handleJoinGroup = async (groupId) => {
+    try {
+      // Implement join group functionality here
+      console.log(`Joining group ${groupId}`);
+      // Example API call to join the group
+      // await joinGroup(groupId, token);
+    } catch (error) {
+      console.error('Error joining group:', error);
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-light-gray text-gray-800 font-poppins">
-      {/* Header */}
-      <header className="bg-dark-blue text-white p-6 text-center shadow-md">
-        <h1 className="text-4xl font-bold">Student Groups & Clubs</h1>
-        <input
-          type="text"
-          placeholder="Search for groups..."
-          className="mt-4 p-2 rounded-md w-2/3"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </header>
-
-      {/* Groups Section */}
-      {loading ? (
-        <div className="text-center mt-8">
-          <p>Loading groups...</p>
-        </div>
-      ) : (
-        <section className="p-8 flex flex-wrap justify-center gap-8 w-full max-w-7xl mx-auto">
-          {filteredGroups.length > 0 ? (
-            filteredGroups.map((group) => (
-              <GroupCard key={group.id} group={group} />
-            ))
-          ) : (
-            <p>No groups found</p>
-          )}
-        </section>
-      )}
+    <div className="p-4  min-h-screen">
+      <h1 className="text-3xl font-bold mb-4">Groups</h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        {groups.map((group) => (
+          <div
+            key={group._id}
+            className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
+          >
+            <h2 className="text-xl font-semibold mb-2">{group.name}</h2>
+            <p className="text-gray-600 mb-4">{group.description}</p>
+            <div className="flex items-center justify-between">
+              <span className="text-gray-500">Members: {group.members.length}</span>
+              <a
+                href={`/groups/${group._id}`}
+                className="text-blue-500 hover:underline"
+              >
+                View Details
+              </a>
+            </div>
+            <button
+              onClick={() => handleJoinGroup(group._id)}
+              className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors duration-300"
+            >
+              Join
+            </button>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
